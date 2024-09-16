@@ -15,6 +15,13 @@ const AddFieldForm = ({ show, handleClose, addField: addFieldToState }) => {
   const [csvFile, setCsvFile] = useState(null);
   const [csvErrors, setCsvErrors] = useState([]);
 
+  // If the modal is closed or hidden, reset the form fields and errors
+  const resetErrors = () => {
+    setError(null); 
+    setCsvErrors([]);
+    resetForm();
+  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -75,7 +82,10 @@ const AddFieldForm = ({ show, handleClose, addField: addFieldToState }) => {
   };
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={() => {
+      handleClose();
+      resetErrors();
+    }}>
       <Modal.Header closeButton>
         <Modal.Title>Add Field</Modal.Title>
       </Modal.Header>
@@ -112,7 +122,7 @@ const AddFieldForm = ({ show, handleClose, addField: addFieldToState }) => {
             </Form.Group>
           )}
           {error && <Alert variant="danger">{error}</Alert>}
-          <Button variant="primary" type="submit">Submit</Button>
+          <Button className="mt-2" variant="primary" type="submit">Submit</Button>
         </Form>
         <hr />
         <Form>
@@ -124,7 +134,7 @@ const AddFieldForm = ({ show, handleClose, addField: addFieldToState }) => {
               onChange={handleCsvUpload}
             />
           </Form.Group>
-          <Button variant="secondary" onClick={handleCsvSubmit}>Upload CSV</Button>
+          <Button className="mt-2" variant="secondary" onClick={handleCsvSubmit}>Upload CSV</Button>
         </Form>
         {csvErrors.length > 0 && (
           <Alert variant="danger">

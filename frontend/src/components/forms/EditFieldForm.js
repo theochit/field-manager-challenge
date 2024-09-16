@@ -13,17 +13,15 @@ const EditFieldForm = ({ field, show, handleClose, setField }) => {
   const { user } = useContext(UserContext);
   const [fieldName, setFieldName] = useState(field.field_name);
   const [geometry, setGeometry] = useState(JSON.stringify(field.geometry));
-  const [landowner, setLandowner] = useState(field.landowner);
-  const [geojsonError, setGeojsonError] = useState(null);
-  const [submitError, setSubmitError] = useState(null);  // State for submission errors
+  const [landowner, setLandowner] = useState(field.landowner); // Set landowner state to the existing field's landowner
+  const [error, setError] = useState(null);
 
   // If the modal is closed or hidden, reset the form fields and errors
   const resetErrors = () => {
     setFieldName(field.field_name);
     setGeometry(JSON.stringify(field.geometry));
     setLandowner(field.landowner);
-    setGeojsonError(null);
-    setSubmitError(null);
+    setError(null); // Reset the error state
   };
 
   const handleFormSubmit = (e) => {
@@ -32,14 +30,14 @@ const EditFieldForm = ({ field, show, handleClose, setField }) => {
     // Validate the GeoJSON before submitting
     const validation = validateGeoJSON(geometry);
     if (!validation.isValid) {
-      setGeojsonError(validation.message);
+      setError(validation.message); // Set geojsonError
       return;
     }
 
     const updatedField = {
       field_name: fieldName,
-      geometry: JSON.parse(geometry),
-      landowner: user.role === 'channel_partner' ? landowner : field.landowner,
+      geometry: JSON.parse(geometry), 
+      landowner: user.role === 'channel_partner' ? landowner : field.landowner, // Use updated landowner only for channel_partner
     };
 
     // Send PUT request to update the field
@@ -49,13 +47,13 @@ const EditFieldForm = ({ field, show, handleClose, setField }) => {
       }
     })
       .then(response => {
-        setField(response.data);
+        setField(response.data); // Update field data in parent state, so that MapComponent updates
         resetErrors();
         handleClose();
       })
       .catch(error => {
         console.error('Error updating field:', error);
-        setSubmitError(error.response?.data?.landowner?.[0] || 'Failed to update the field.');
+        setError(error.response?.data?.landowner?.[0] || 'Failed to update the field.'); // Set submitError
       });
   };
 
@@ -63,8 +61,8 @@ const EditFieldForm = ({ field, show, handleClose, setField }) => {
     <Modal
       show={show}
       onHide={() => {
-        resetErrors(); // Reset errors when modal is closed
         handleClose();
+        resetErrors();
       }}
     >
       <Modal.Header closeButton>
@@ -82,7 +80,7 @@ const EditFieldForm = ({ field, show, handleClose, setField }) => {
             />
           </Form.Group>
           
-          {user.role === 'channel_partner' && (
+          {user.role === 'channel_partner' && ( // Only ChannelPartners can edit the landowner
             <Form.Group controlId="formLandowner">
               <Form.Label>Landowner ID</Form.Label>
               <Form.Control
@@ -104,9 +102,8 @@ const EditFieldForm = ({ field, show, handleClose, setField }) => {
               required
             />
           </Form.Group>
-          {geojsonError && <Alert variant="danger">{geojsonError}</Alert>}
-          {submitError && <Alert variant="danger">{submitError}</Alert>}
-          <Button variant="primary" type="submit">
+          {error && <Alert className="my-1" variant="danger">{error}</Alert>}
+          <Button className="mt-1" variant="primary" type="submit">
             Save Changes
           </Button>
         </Form>
