@@ -1,7 +1,10 @@
+import pyproj
 from django.contrib.auth.models import User
 from django.db import models
 from shapely.geometry import shape  # Import shape to handle GeoJSON geometries
 from shapely.geometry.polygon import Polygon
+from shapely.ops import transform
+
 
 class ChannelPartner(User):
 
@@ -24,12 +27,19 @@ class Field(models.Model):
         return self.field_name
 
     def calculate_acreage(self):
-        """Calculate acreage based on the GeoJSON geometry."""
+        """Calculate acreage assuming the GeoJSON is EPSG:4326."""
         geom = shape(self.geometry)
-        
+
         if isinstance(geom, Polygon):
-            area_in_square_meters = geom.area 
-            acres = area_in_square_meters * 0.000247105  # Convert m^2 to acres
+            # Need to transform to a projection that uses meters in order to calculate acres.
+            transformer = pyproj.Transformer.from_crs("EPSG:4326", "EPSG:3857", always_xy=True).transform
+            geom_in_meters = transform(transformer, geom)
+
+            # Calculate the area in square meters
+            area_in_square_meters = geom_in_meters.area
+
+            # Convert square meters to acres (1 acre = 4046.86 square meters)
+            acres = area_in_square_meters / 4046.86
             return acres
         return None
 

@@ -3,21 +3,23 @@ version: '3.8'
 services:
   backend:
     build:
-      context: ./backend  # Set context to the backend directory
-      dockerfile: Dockerfile  # Dockerfile is in the backend folder
+      context: ./backend  # Points to the backend directory containing the Dockerfile
     container_name: backend
     command: poetry run python manage.py runserver 0.0.0.0:8000
+    working_dir: /backend
     volumes:
-      - ./backend:/backend  # Mount the backend code to /app inside the container
+      - ./backend:/backend  # Mounts your backend code to /backend inside the container
     environment:
-      POSTGRES_DB: your_db_name
-      POSTGRES_USER: your_db_user
-      POSTGRES_PASSWORD: your_db_password
-      DJANGO_SETTINGS_MODULE: settings
+      POSTGRES_DB: field_manager_challenge  # Name of the database to create
+      POSTGRES_USER: local_user             # Name of the PostgreSQL user
+      POSTGRES_PASSWORD: your_password      # Password for the PostgreSQL user
+      DJANGO_SETTINGS_MODULE: settings      # Django settings module
+      DJANGO_DB_HOST: host.docker.internal  # Use Docker's internal host to connect to localhost
+      DJANGO_DB_PORT: 5432                  # PostgreSQL default port
     ports:
-      - "8000:8000"
+      - "8000:8000"  # Exposes the Django development server on port 8000
     depends_on:
-      - db
+      - db           # Ensures PostgreSQL starts before Django
 
   frontend:
     build:
@@ -34,9 +36,9 @@ services:
     image: postgres:13
     container_name: db
     environment:
-      POSTGRES_DB: your_db_name
-      POSTGRES_USER: your_db_user
-      POSTGRES_PASSWORD: your_db_password
+      POSTGRES_DB: field_manager_challenge  # Database name
+      POSTGRES_USER: local_user             # User created in PostgreSQL
+      POSTGRES_PASSWORD: your_password      # Password for the user
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
