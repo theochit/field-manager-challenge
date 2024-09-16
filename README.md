@@ -41,6 +41,16 @@ This project is built using `docker-compose`. Follow the steps below to get star
   - ChannelPartners can access any field by navigating to `/fields/{id}`.
 
 ---
+ 
+## Assumptions
+
+- **ChannelPartner:** A ChannelPartner is responsible for managing zero to many Landowners. They have visibility and access to all resources within the system.
+  
+- **Landowner:** A Landowner can have only one ChannelPartner managing them. Landowners can only view and manage their own resources (fields).
+
+- **Field:** A field is owned by one Landowner and its `geometry` must be represented as a single GeoJSON Polygon Feature.
+
+---
 
 ## External Packages Used
 
@@ -51,16 +61,6 @@ This project is built using `docker-compose`. Follow the steps below to get star
 - **ArcGIS:**  Handles map visualization and renders field geometries.
 - **GeoJSON-validation:** Validates submitted fields for correctness and format.
 - **ESLint:** Ensures consistent code style and import structure across the frontend.
-
----
-
-## Key Assumptions
-
-- **ChannelPartner:** A ChannelPartner is responsible for managing zero to many Landowners. They have visibility and access to all resources within the system.
-  
-- **Landowner:** A Landowner can have only one ChannelPartner managing them. Landowners can only view and manage their own resources (fields).
-
-- **Field:** A field is owned by one Landowner and its `geometry` must be represented as a single GeoJSON Polygon Feature.
 
 ---
 
