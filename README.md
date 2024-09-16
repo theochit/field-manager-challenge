@@ -23,6 +23,17 @@ This project is built using `docker-compose`. Follow the steps below to get star
 
 ### Field Management Features
 
+- **ChannelPartner Specifics:**
+  - A ChannelPartner is responsible for managing zero to many Landowners. They have read and write access to all resources within the system.    
+  - As a ChannelPartner, the `/fields` route displays fields belonging to the Landowners you manage.
+  - ChannelPartners can view all Landowners and their details via the Landowners tab in the navbar or directly by visiting `/landowners/{id}/fields`.
+  - ChannelPartners can access any field by navigating to `/fields/{id}`.
+  - 
+- **Landowner Specifics:**
+  - A Landowner can have only one ChannelPartner managing them. Landowners can only view, add, edit and delete their own Fields.
+  - As a Landowner, the `/fields` route only displays your fields. You can add, edit, or delete fields.
+  - Landowners cannot view other Landowners’ fields or see ChannelPartner information.
+
 - Logged in as either role, you can access the `/fields` route to:
   - Add a field manually.
   - Import a CSV of Fields.
@@ -30,25 +41,6 @@ This project is built using `docker-compose`. Follow the steps below to get star
 - **Field Geometry Requirements:**
   - The geometry must be a single **GeoJSON Polygon Feature**.
   - Example CSV files are provided in the `field-manager-challenge/example_files` folder.
-
-- **Landowner Specifics:**
-  - As a Landowner, the `/fields` route only displays your fields. You can add, edit, or delete fields.
-  - Landowners cannot view other Landowners’ fields or see ChannelPartner information.
-
-- **ChannelPartner Specifics:**
-  - As a ChannelPartner, the `/fields` route displays fields belonging to the Landowners you manage.
-  - ChannelPartners can view all Landowners and their details via the Landowners tab in the navbar or directly by visiting `/landowners/{id}/fields`.
-  - ChannelPartners can access any field by navigating to `/fields/{id}`.
-
----
- 
-## Assumptions
-
-- **ChannelPartner:** A ChannelPartner is responsible for managing zero to many Landowners. They have visibility and access to all resources within the system.
-  
-- **Landowner:** A Landowner can have only one ChannelPartner managing them. Landowners can only view and manage their own resources (fields).
-
-- **Field:** A field is owned by one Landowner and its `geometry` must be represented as a single GeoJSON Polygon Feature.
 
 ---
 
