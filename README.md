@@ -14,7 +14,7 @@ This project is built using `docker-compose`. Follow the steps below to get star
 
 2. **User Types:**
    - There are two roles in the system:
-     - Landowner: Typically a farmer or landholder.
+     - Landowner: Typically a farmer.
      - ChannelPartner: Internal managers responsible for overseeing Landowners (e.g., an Arva employee).
    - **Note:** You must register a ChannelPartner first. Landowners require a ChannelPartner to complete their registration.
    - No routes are available until a user logs in.
