@@ -54,6 +54,8 @@ This project is built using `docker-compose`. Follow the steps below to get star
 
 ## External Packages Used
 
+- **Docker**: To containerize the app and make local development / deployment easier.
+
 ### Backend:
 - **Shapely, pyproj:** Used for geometry operations, this case just calculating the area of a geometry.
 
