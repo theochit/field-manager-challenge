@@ -1,5 +1,5 @@
-// UserContext.js
-import React, { createContext, useEffect,useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
+import PropTypes from 'prop-types'; // Import PropTypes
 import axios from 'axios';
 
 import { BACKEND_URL } from '../../config';
@@ -74,4 +74,9 @@ export const UserProvider = ({ children, navigate }) => {
       {children}
     </UserContext.Provider>
   );
+};
+
+UserProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+  navigate: PropTypes.func.isRequired
 };

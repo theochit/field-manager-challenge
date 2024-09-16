@@ -25,7 +25,7 @@ const FieldDetail = () => {
       .then(response => {
         const fetchedField = response.data;
         // Check if user is landowner and ID does not match
-        if (user.role === 'landowner' && fetchedField.landowner != user.id) {
+        if (user.role === 'landowner' && fetchedField.landowner !== parseInt(user.id, 10)) {
           setUnauthorized(true); // Set unauthorized state if user can't access the field
         } else {
           setField(fetchedField);

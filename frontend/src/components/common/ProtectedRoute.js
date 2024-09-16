@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types'; // Import PropTypes
 import { Navigate, Outlet } from 'react-router-dom';
 
 import UnauthorizedPage from './UnauthorizedPage';
@@ -14,13 +15,15 @@ const ProtectedRoute = ({ allowedRoles }) => {
 
   if (allowedRoles && !allowedRoles.includes(user.role)) {
     // User does not have any of the allowed roles, show "Not Authorized" message
-    return (
-      <UnauthorizedPage />
-    );
+    return <UnauthorizedPage />;
   }
 
   // If authenticated and the role matches, render the child routes
   return <Outlet />;
+};
+
+ProtectedRoute.propTypes = {
+  allowedRoles: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default ProtectedRoute;

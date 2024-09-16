@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import WebMap from '@arcgis/core/WebMap';
 import MapView from '@arcgis/core/views/MapView';
 import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
@@ -71,6 +72,14 @@ const MapComponent = ({ geometry }) => {
       {/* Map will be rendered inside this div */}
     </div>
   );
+};
+
+// Define prop types for MapComponent
+MapComponent.propTypes = {
+  geometry: PropTypes.shape({
+    type: PropTypes.string.isRequired,  // e.g., 'Polygon', 'Point', etc.
+    coordinates: PropTypes.arrayOf(PropTypes.any).isRequired  // Array of coordinates for the geometry
+  }).isRequired
 };
 
 export default MapComponent;

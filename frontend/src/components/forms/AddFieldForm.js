@@ -1,7 +1,8 @@
-import React, { useContext,useState } from 'react';
-import { Alert,Button, Form, Modal } from 'react-bootstrap';
+import React, { useContext, useState } from 'react';
+import PropTypes from 'prop-types';  // Import PropTypes
+import { Alert, Button, Form, Modal } from 'react-bootstrap';
 
-import { addResource, uploadCsv,validateGeoJSON } from '../../utils';
+import { addResource, uploadCsv, validateGeoJSON } from '../../utils';
 import { UserContext } from '../common/UserContext';
 
 const AddFieldForm = ({ show, handleClose, addField: addFieldToState }) => {
@@ -135,6 +136,12 @@ const AddFieldForm = ({ show, handleClose, addField: addFieldToState }) => {
       </Modal.Body>
     </Modal>
   );
+};
+
+AddFieldForm.propTypes = {
+  show: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  addField: PropTypes.func.isRequired
 };
 
 export default AddFieldForm;

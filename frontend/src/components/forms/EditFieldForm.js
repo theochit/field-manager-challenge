@@ -1,5 +1,6 @@
-import React, { useContext,useState } from 'react';
-import { Alert,Button, Form, Modal } from 'react-bootstrap';
+import React, { useContext, useState } from 'react';
+import PropTypes from 'prop-types';
+import { Alert, Button, Form, Modal } from 'react-bootstrap';
 import axios from 'axios';
 
 import config from '../../config';
@@ -12,8 +13,18 @@ const EditFieldForm = ({ field, show, handleClose, setField }) => {
   const { user } = useContext(UserContext);
   const [fieldName, setFieldName] = useState(field.field_name);
   const [geometry, setGeometry] = useState(JSON.stringify(field.geometry));
-  const [landowner, setLandowner] = useState(field.landowner);  // Set landowner state to the existing field's landowner
+  const [landowner, setLandowner] = useState(field.landowner);
   const [geojsonError, setGeojsonError] = useState(null);
+  const [submitError, setSubmitError] = useState(null);  // State for submission errors
+
+  // If the modal is closed or hidden, reset the form fields and errors
+  const resetErrors = () => {
+    setFieldName(field.field_name);
+    setGeometry(JSON.stringify(field.geometry));
+    setLandowner(field.landowner);
+    setGeojsonError(null);
+    setSubmitError(null);
+  };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -28,7 +39,7 @@ const EditFieldForm = ({ field, show, handleClose, setField }) => {
     const updatedField = {
       field_name: fieldName,
       geometry: JSON.parse(geometry),
-      landowner: user.role === 'channel_partner' ? landowner : field.landowner,  // Use updated landowner only for channel_partner
+      landowner: user.role === 'channel_partner' ? landowner : field.landowner,
     };
 
     // Send PUT request to update the field
@@ -38,16 +49,24 @@ const EditFieldForm = ({ field, show, handleClose, setField }) => {
       }
     })
       .then(response => {
-        setField(response.data);  // Update field data in parent state, so that MapComponent updates
+        setField(response.data);
+        resetErrors();
         handleClose();
       })
       .catch(error => {
         console.error('Error updating field:', error);
+        setSubmitError(error.response?.data?.landowner?.[0] || 'Failed to update the field.');
       });
   };
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal
+      show={show}
+      onHide={() => {
+        resetErrors(); // Reset errors when modal is closed
+        handleClose();
+      }}
+    >
       <Modal.Header closeButton>
         <Modal.Title>Edit Field</Modal.Title>
       </Modal.Header>
@@ -63,7 +82,7 @@ const EditFieldForm = ({ field, show, handleClose, setField }) => {
             />
           </Form.Group>
           
-          {user.role === 'channel_partner' && (  // Only ChannelPartners can edit the landowner
+          {user.role === 'channel_partner' && (
             <Form.Group controlId="formLandowner">
               <Form.Label>Landowner ID</Form.Label>
               <Form.Control
@@ -80,12 +99,13 @@ const EditFieldForm = ({ field, show, handleClose, setField }) => {
             <Form.Control
               as="textarea"
               rows={5}
-              value={JSON.stringify(JSON.parse(geometry || '{}'), null, 2)} // Simple pretty-printing
+              value={JSON.stringify(JSON.parse(geometry || '{}'), null, 2)} // Pretty-printing
               onChange={(e) => setGeometry(e.target.value)}
               required
             />
           </Form.Group>
           {geojsonError && <Alert variant="danger">{geojsonError}</Alert>}
+          {submitError && <Alert variant="danger">{submitError}</Alert>}
           <Button variant="primary" type="submit">
             Save Changes
           </Button>
@@ -93,6 +113,18 @@ const EditFieldForm = ({ field, show, handleClose, setField }) => {
       </Modal.Body>
     </Modal>
   );
+};
+
+EditFieldForm.propTypes = {
+  field: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    field_name: PropTypes.string.isRequired,
+    geometry: PropTypes.object.isRequired,
+    landowner: PropTypes.number.isRequired,
+  }).isRequired,
+  show: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  setField: PropTypes.func.isRequired,
 };
 
 export default EditFieldForm;
