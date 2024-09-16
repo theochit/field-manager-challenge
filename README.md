@@ -28,7 +28,7 @@ This project is built using `docker-compose`. Follow the steps below to get star
   - As a ChannelPartner, the `/fields` route displays fields belonging to the Landowners you manage.
   - ChannelPartners can view all Landowners and their details via the Landowners tab in the navbar or directly by visiting `/landowners/{id}/fields`.
   - ChannelPartners can access any field by navigating to `/fields/{id}`.
-  - 
+   
 - **Landowner Specifics:**
   - A Landowner can have only one ChannelPartner managing them. Landowners can only view, add, edit and delete their own Fields.
   - As a Landowner, the `/fields` route only displays your fields. You can add, edit, or delete fields.
@@ -60,16 +60,13 @@ This project is built using `docker-compose`. Follow the steps below to get star
 
 ## Possible Improvements
 
-1. **Extending Django’s User Model:**
-   
-
-2. **Authorization Handling:**
+1. **Authorization Handling:**
    - Both ChannelPartner and Landowner roles extend Django's built-in `User` model. This provides free authentication, but it's not an ideal approach for secure permissions. Proper token-based authentication should be enforced on the backend.
    - Currently, authorization to view resources is handled on the frontend. The backend routes are open and do not require tokens, for ease of development and demos. This approach is not suitable for production.
 
-4. **Structured Error Handling:**
+2. **Structured Error Handling:**
    - Perhaps using more generic error components.
 
-5. **Styling:**
+3. **Styling:**
    - Bootstrap is used for styling in this project, but it feels outdated. It’s a quick solution for getting the project off the ground, but in my experience, is not the easiest to customize.
    
