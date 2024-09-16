@@ -67,14 +67,15 @@ This project is built using `docker-compose`. Follow the steps below to get star
 ## Possible Improvements
 
 1. **Extending Django’s User Model:**
-   - Both ChannelPartner and Landowner roles extend Django's built-in `User` model. While this provides built-in authentication, it's not an ideal approach for **secure permissions**. Backend permission handling should be improved to ensure better control over resources.
+   
 
 2. **Authorization Handling:**
-   - Currently, authorization to view resources is handled on the frontend. The backend routes are open and do not require tokens. This approach is not suitable for production environments. Proper token-based authentication should be enforced on the backend.
+   - Both ChannelPartner and Landowner roles extend Django's built-in `User` model. This provides free authentication, but it's not an ideal approach for secure permissions. Proper token-based authentication should be enforced on the backend.
+   - Currently, authorization to view resources is handled on the frontend. The backend routes are open and do not require tokens, for ease of development and demos. This approach is not suitable for production.
 
-3. **Structured Error Handling:**
+4. **Structured Error Handling:**
    - Perhaps using more generic error components.
 
-4. **Styling:**
+5. **Styling:**
    - Bootstrap is used for styling in this project, but it feels outdated. It’s a quick solution for getting the project off the ground, but in my experience, is not the easiest to customize.
    
