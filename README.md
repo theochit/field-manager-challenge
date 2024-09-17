@@ -60,7 +60,7 @@ This project is built using `docker-compose`. Follow the steps below to get star
 
 ## Room for Improvement
 1. **Typing**
-   - Use Typescript instead of JS (and remove react-props)
+   - Use Typescript instead of JS for typing, since react-props is outdated and clunky.
 
 2. **Authorization Handling:**
    - Both ChannelPartner and Landowner roles extend Django's built-in `User` model. This provides free authentication, but it's not an ideal approach for secure permissions. Proper token-based authentication should be enforced on the backend.
