@@ -14,7 +14,7 @@ This project is built using `docker-compose`. Follow the steps below to get star
 
 2. **User Types:**
    - There are two roles in the system:
-     - Landowner: Typically a farmer or landholder.
+     - Landowner: Typically a farmer.
      - ChannelPartner: Internal managers responsible for overseeing Landowners (e.g., an Arva employee).
    - **Note:** You must register a ChannelPartner first. Landowners require a ChannelPartner to complete their registration.
    - No routes are available until a user logs in.
@@ -22,6 +22,17 @@ This project is built using `docker-compose`. Follow the steps below to get star
 ---
 
 ### Field Management Features
+
+- **ChannelPartner Specifics:**
+  - A ChannelPartner is responsible for managing zero to many Landowners. They have read and write access to all resources within the system.    
+  - As a ChannelPartner, the `/fields` route displays fields belonging to the Landowners you manage.
+  - ChannelPartners can view all Landowners and their details via the Landowners tab in the navbar or directly by visiting `/landowners/{id}/fields`.
+  - ChannelPartners can access any field by navigating to `/fields/{id}`.
+   
+- **Landowner Specifics:**
+  - A Landowner can have only one ChannelPartner managing them. Landowners can only view, add, edit and delete their own Fields.
+  - As a Landowner, the `/fields` route only displays your fields. You can add, edit, or delete fields.
+  - Landowners cannot view other Landowners’ fields or see ChannelPartner information.
 
 - Logged in as either role, you can access the `/fields` route to:
   - Add a field manually.
@@ -31,18 +42,11 @@ This project is built using `docker-compose`. Follow the steps below to get star
   - The geometry must be a single **GeoJSON Polygon Feature**.
   - Example CSV files are provided in the `field-manager-challenge/example_files` folder.
 
-- **Landowner Specifics:**
-  - As a Landowner, the `/fields` route only displays your fields. You can add, edit, or delete fields.
-  - Landowners cannot view other Landowners’ fields or see ChannelPartner information.
-
-- **ChannelPartner Specifics:**
-  - As a ChannelPartner, the `/fields` route displays fields belonging to the Landowners you manage.
-  - ChannelPartners can view all Landowners and their details via the Landowners tab in the navbar or directly by visiting `/landowners/{id}/fields`.
-  - ChannelPartners can access any field by navigating to `/fields/{id}`.
-
 ---
 
 ## External Packages Used
+
+- **Docker**: To containerize the app and make local development / deployment easier.
 
 ### Backend:
 - **Shapely, pyproj:** Used for geometry operations, this case just calculating the area of a geometry.
@@ -54,23 +58,13 @@ This project is built using `docker-compose`. Follow the steps below to get star
 
 ---
 
-## Key Assumptions
-
-- **ChannelPartner:** A ChannelPartner is responsible for managing zero to many Landowners. They have visibility and access to all resources within the system.
-  
-- **Landowner:** A Landowner can have only one ChannelPartner managing them. Landowners can only view and manage their own resources (fields).
-
-- **Field:** A field is owned by one Landowner and its `geometry` must be represented as a single GeoJSON Polygon Feature.
-
----
-
-## Possible Improvements
-
-1. **Extending Django’s User Model:**
-   - Both ChannelPartner and Landowner roles extend Django's built-in `User` model. While this provides built-in authentication, it's not an ideal approach for **secure permissions**. Backend permission handling should be improved to ensure better control over resources.
+## Room for Improvement
+1. **Typing**
+   - Use Typescript instead of JS for typing, since react-props is outdated and clunky.
 
 2. **Authorization Handling:**
-   - Currently, authorization to view resources is handled on the frontend. The backend routes are open and do not require tokens. This approach is not suitable for production environments. Proper token-based authentication should be enforced on the backend.
+   - Both ChannelPartner and Landowner roles extend Django's built-in `User` model. This provides free authentication, but it's not an ideal approach for secure permissions. Proper token-based authentication should be enforced on the backend.
+   - Currently, authorization to view resources is handled on the frontend. The backend routes are open and do not require tokens, for ease of development and demos. This approach is not suitable for production.
 
 3. **Structured Error Handling:**
    - Perhaps using more generic error components.
