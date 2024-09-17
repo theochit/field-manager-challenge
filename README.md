@@ -59,16 +59,15 @@ This project is built using `docker-compose`. Follow the steps below to get star
 ---
 
 ## Room for Improvement
-1. **Typing**
-   - Use Typescript instead of JS for typing, since react-props is outdated and clunky.
+1. **Typing:** Use Typescript instead of JS for typing, since react-props is outdated and clunky.
 
 2. **Authorization Handling:**
    - Both ChannelPartner and Landowner roles extend Django's built-in `User` model. This provides free authentication, but it's not an ideal approach for secure permissions. Proper token-based authentication should be enforced on the backend.
    - Currently, authorization to view resources is handled on the frontend. The backend routes are open and do not require tokens, for ease of development and demos. This approach is not suitable for production.
 
-3. **Structured Error Handling:**
-   - Perhaps using more generic error components.
+3. **Structured Error Handling:** Perhaps using more generic error components.
 
-4. **Styling:**
-   - Bootstrap is used for styling in this project, but it feels outdated. It’s a quick solution for getting the project off the ground, but in my experience, is not the easiest to customize.
+4. **Styling:** Bootstrap is used for styling in this project, but it feels outdated. It’s a quick solution for getting the project off the ground, but in my experience, is not the easiest to customize.
+
+5. **GeoJSON Support:** Add support for all GeoJSON types. Currently only Polygon is accepted. 
    
