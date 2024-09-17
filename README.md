@@ -1,12 +1,11 @@
 # Arva Field Manager Challenge
 
-## Development / Startup
-
-This project is built using `docker-compose`. Follow the steps below to get started:
+## Development / Getting Started
 
 1. **Build and Run:**
+   This project is built using `docker-compose`.
    - Run the project using the command:
-     ```bash
+     ```
      docker compose up --build
      ```
    - **Note:** The PostgreSQL database is **not** automatically created. You'll need to create it manually before running the application.
