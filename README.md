@@ -1,4 +1,4 @@
-# Arva Field Manager Challenge
+# Field Manager Challenge
 
 ## Development / Getting Started
 
